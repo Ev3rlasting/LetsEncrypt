@@ -30,23 +30,12 @@ Furthermore, it doesn't understand the PEM format that any sane program dealing 
  - [optional, but likely] Hopefully, the only reason you got stuck doing this is your running some webapp in tomcat. Now configure your tomcat like so:
     
       ```
-        <!-- sendfile disables compression, so we turn it off (trade cpu for bandwith) -->
         <Connector
            protocol="org.apache.coyote.http11.Http11NioProtocol"
-           port="443" maxThreads="200"
-           compressableMimeType="text/html,text/xml,text/plain,text/javascript,text/css,text/js,text/json,application/javascript"
-           compression="on"
-           compressionMinSize="1024"
-           useSendfile="false"
+           port="8443" maxThreads="200"
            scheme="https" secure="true" SSLEnabled="true"
-           keystoreFile="/etc/[jks_filename].jks"
-           keyAlias="[name]"
-           keystorePass="[jks password]"
-           keyPass="[jks password|pkcs password]"
-           clientAuth="false"
-           sslProtocol="TLS"
-           sslEnabledProtocols="TLSv1.2"
-        />
+           keystoreFile="${user.home}/.keystore" keystorePass="changeit"
+           clientAuth="false" sslProtocol="TLS"/>
       ```
 
  - And finally, you will probably want to add the cert chain for your shiny new cert into your jvm cacerts, so java will trust your privkey. You need this if you app needs to trust itself - like if you have callback.
